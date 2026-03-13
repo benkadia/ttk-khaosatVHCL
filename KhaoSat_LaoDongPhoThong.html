@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Khảo Sát VHCL – Lao Động Phổ Thông | TTK-QA-P15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060d1a;--surface:#0d1b2e;--surface2:#112240;--border:rgba(99,179,237,.12);--border2:rgba(99,179,237,.22);--accent:#38bdf8;--accent2:#7c3aed;--text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);font-family:'Sora',sans-serif;color:var(--text);overflow-x:hidden;-webkit-text-size-adjust:100%}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,189,248,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-30vh;left:-20vw;width:70vw;height:70vh;background:radial-gradient(ellipse,rgba(56,189,248,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:32px 18px 72px}
+.screen{display:none}.screen.active{display:block;-webkit-animation:fadeUp .4s cubic-bezier(.16,1,.3,1);animation:fadeUp .4s cubic-bezier(.16,1,.3,1)}
+@-webkit-keyframes fadeUp{from{opacity:0;-webkit-transform:translateY(20px)}to{opacity:1;-webkit-transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.header{text-align:center;margin-bottom:36px;padding-top:8px}
+.header-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border2);border-radius:99px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:16px;background:rgba(56,189,248,.06)}
+.header-tag::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);-webkit-animation:blink 2s infinite;animation:blink 2s infinite}
+@-webkit-keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing:-1px;background:linear-gradient(135deg,#e0f2fe 0%,#38bdf8 40%,#7c3aed 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.header-sub{color:var(--muted);font-size:15px}
+.nhom-badge{display:inline-block;margin-top:8px;padding:5px 16px;border-radius:99px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#a78bfa;font-size:13px;font-weight:700;letter-spacing:.5px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,.4),transparent)}
+.field{margin-bottom:20px}
+.field label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+.req{color:#ef4444;font-size:15px;line-height:1}
+.inp{width:100%;padding:14px 16px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;color:var(--text);font-size:16px;font-family:'Sora',sans-serif;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.12);background:rgba(56,189,248,.04)}
+.inp::-webkit-input-placeholder{color:var(--muted)}
+.inp::placeholder{color:var(--muted)}
+.field-error{font-size:13px;color:#ef4444;margin-top:6px;display:none}
+.field.has-error .field-error{display:block}.field.has-error .inp{border-color:#ef4444}
+.info-box{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.15);border-radius:14px;padding:18px 20px;margin-bottom:22px}
+.info-box-title{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.info-box ul{padding-left:20px;font-size:15px;line-height:2.2;color:var(--muted2);list-style:disc}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.info-item{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.1);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.info-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.info-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px}
+.info-val{font-size:14px;font-weight:600;color:var(--text)}
+.btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;font-size:17px;font-weight:700;font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent;display:block}
+.btn-primary{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border);margin-top:10px}
+.quiz-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:8px 16px}
+.timer-wrap.warn{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.35)}
+.timer-wrap.danger{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);-webkit-animation:pulse .8s infinite;animation:pulse .8s infinite}
+@-webkit-keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+#timer-display{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#ef4444;letter-spacing:1px}
+.timer-wrap.warn #timer-display{color:#f97316}
+.prog-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:20px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#0ea5e9,#7c3aed);border-radius:99px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.dot{width:38px;height:38px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);cursor:pointer;font-size:14px;font-weight:700;color:var(--muted2);background:rgba(255,255,255,.04);font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent}
+.dot.active{border-color:var(--accent);background:rgba(56,189,248,.15);color:var(--accent)}
+.dot.done{background:rgba(124,58,237,.25);border-color:rgba(124,58,237,.5);color:#a78bfa}
+.dot.unanswered{border-color:#ef4444!important;background:rgba(239,68,68,.2)!important;color:#ef4444!important;-webkit-animation:shake .4s ease;animation:shake .4s ease}
+@-webkit-keyframes shake{0%,100%{-webkit-transform:translateX(0)}20%{-webkit-transform:translateX(-6px)}40%{-webkit-transform:translateX(6px)}60%{-webkit-transform:translateX(-4px)}80%{-webkit-transform:translateX(4px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px;position:relative}
+.q-card.unanswered-highlight{border-color:rgba(239,68,68,.5)!important;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--accent2);opacity:.8;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.q-num::before,.q-num::after{content:'';flex:1;height:1px;background:rgba(124,58,237,.2)}
+.q-text{font-size:16px;font-weight:600;line-height:1.75;color:#f1f5f9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:14px;cursor:pointer;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);text-align:left;width:100%;font-family:'Sora',sans-serif;color:var(--text);-webkit-tap-highlight-color:transparent}
+.opt.picked{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.4)}
+.opt-lbl{min-width:28px;height:28px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--muted2);font-family:'JetBrains Mono',monospace}
+.opt.picked .opt-lbl{background:#7c3aed;color:#fff}
+.opt-txt{font-size:15px;line-height:1.65;padding-top:3px;flex:1}
+.opt-score{display:none}
+.opt.res-4{background:rgba(16,185,129,.1);border-color:#10b981}.opt.res-4 .opt-lbl{background:#10b981;color:#fff}
+.opt.res-3{background:rgba(59,130,246,.1);border-color:#3b82f6}.opt.res-3 .opt-lbl{background:#3b82f6;color:#fff}
+.opt.res-2{background:rgba(245,158,11,.1);border-color:#f59e0b}.opt.res-2 .opt-lbl{background:#f59e0b;color:#fff}
+.opt.res-1{background:rgba(239,68,68,.1);border-color:#ef4444}.opt.res-1 .opt-lbl{background:#ef4444;color:#fff}
+.opt.res-4 .opt-score,.opt.res-3 .opt-score,.opt.res-2 .opt-score,.opt.res-1 .opt-score{display:flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.opt.res-4 .opt-score{background:#10b981}.opt.res-3 .opt-score{background:#3b82f6}.opt.res-2 .opt-score{background:#f59e0b}.opt.res-1 .opt-score{background:#ef4444}
+.nav-row{display:flex;gap:8px;margin-top:6px}
+.nav-btn{flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;font-size:15px;font-weight:600;font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent}
+.nav-prev{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border)}
+.nav-prev:disabled{opacity:.3;cursor:default}
+.nav-next{flex:2;background:rgba(124,58,237,.18);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
+.nav-submit{flex:2;background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
+.nav-submit:disabled{background:rgba(255,255,255,.06);color:var(--muted);cursor:default}
+.result-hero{text-align:center;padding:36px 24px 28px;border-radius:20px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden}
+.result-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-bar,linear-gradient(90deg,#10b981,#3b82f6))}
+.result-glow{position:absolute;top:-60px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);width:200px;height:200px;border-radius:50%;filter:blur(40px);pointer-events:none}
+.result-who{font-size:14px;color:var(--muted2);margin-bottom:4px}
+.result-big{font-size:80px;font-weight:800;line-height:1;letter-spacing:-3px;margin-bottom:4px}
+.result-denom{font-size:16px;color:var(--muted);margin-bottom:14px}
+.result-badge{display:inline-block;padding:8px 22px;border-radius:99px;font-size:16px;font-weight:700;margin-bottom:10px;border:1.5px solid}
+.result-desc{font-size:14px;color:var(--muted2);line-height:1.7;max-width:440px;margin:0 auto 12px}
+.score-table{margin:16px auto 0;max-width:480px;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.score-table table{width:100%;border-collapse:collapse;font-size:13.5px}
+.score-table th{background:rgba(124,58,237,.2);color:#a78bfa;font-weight:700;padding:11px 13px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:1px}
+.score-table td{padding:10px 13px;border-top:1px solid var(--border);color:var(--muted2);vertical-align:top;font-size:13px}
+.score-table tr.current-row td{background:rgba(56,189,248,.06);color:var(--text);font-weight:600}
+.score-table tr.current-row td:first-child{color:var(--accent)}
+.ip-info{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:8px 13px;margin-top:14px}
+.ip-dot{width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0}
+.banner{border-radius:12px;padding:13px 18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:14px;border:1px solid}
+.ban-saving{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);color:var(--accent)}
+.ban-success{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#10b981}
+.ban-error{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#ef4444}
+.ban-timeout{background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.3);color:#f97316}
+.spin{display:inline-block;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite}
+@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.detail-wrap{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:20px}
+.detail-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted2);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.d-row{padding:15px;border-radius:12px;margin-bottom:10px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-left:3px solid}
+.d-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.d-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px}
+.d-chip{font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;color:#fff}
+.d-q{font-size:13.5px;color:var(--muted2);line-height:1.6;margin-bottom:8px}
+.d-chosen{font-size:14px;font-weight:500;line-height:1.55}
+.d-best{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.55;padding:8px 12px;background:rgba(16,185,129,.05);border-radius:8px;border-left:2px solid rgba(16,185,129,.3)}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,.75);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;-webkit-overflow-scrolling:touch}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:30px 26px;max-width:400px;width:100%;-webkit-transform:translateY(16px) scale(.97);transform:translateY(16px) scale(.97);position:relative}
+.modal-overlay.open .modal-box{-webkit-transform:translateY(0) scale(1);transform:translateY(0) scale(1)}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,#0ea5e9,#7c3aed)}
+.modal-icon{font-size:40px;text-align:center;margin-bottom:12px}
+.modal-title{font-size:18px;font-weight:700;color:#f1f5f9;text-align:center;margin-bottom:8px}
+.modal-body{font-size:14px;color:var(--muted2);text-align:center;line-height:1.7;margin-bottom:20px}
+.modal-body strong{color:var(--text)}
+.modal-summary{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ms-item{text-align:center}.ms-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px}.ms-val{font-size:15px;font-weight:800;color:var(--text)}
+.modal-btns{display:flex;gap:10px}
+.mbtn{flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent}
+.mbtn-cancel{background:rgba(255,255,255,.07);color:var(--muted2);border:1px solid var(--border)}
+.mbtn-confirm{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
+.unanswered-toast{position:fixed;bottom:24px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#ef4444;border-radius:12px;padding:13px 22px;font-size:14px;font-weight:600;z-index:999;white-space:nowrap;max-width:90vw;text-align:center}
+@media(max-width:500px){.info-grid{grid-template-columns:1fr}.card{padding:20px}.q-card{padding:20px}.result-big{font-size:64px}.modal-summary{grid-template-columns:1fr}.modal-box{padding:24px 20px}.dot{width:34px;height:34px;font-size:13px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="header-tag">&#x2B21; TTK-QA-P15 &middot; KHẢO SÁT VĂN HÓA CHẤT LƯỢNG</div>
+    <h1>Khảo Sát Văn Hóa Chất Lượng</h1>
+    <p class="header-sub">Dành cho Lao Động Phổ Thông · 10 câu · 40 điểm · 15 phút</p>
+    <span class="nhom-badge">👷 NHÓM: LAO ĐỘNG PHỔ THÔNG</span>
+  </div>
+
+  <div id="screen-intro" class="screen active">
+    <div class="card">
+      <div class="field" id="field-name">
+        <label>Họ và tên <span class="req">*</span></label>
+        <input class="inp" id="inp-name" type="text" placeholder="Nhập họ và tên đầy đủ..." autocomplete="name"/>
+        <div class="field-error">⚠ Vui lòng nhập họ và tên</div>
+      </div>
+      <div class="field" id="field-manv">
+        <label>Mã nhân viên <span class="req">*</span></label>
+        <input class="inp" id="inp-manv" type="text" placeholder="Nhập mã nhân viên..." autocomplete="off"/>
+        <div class="field-error">⚠ Vui lòng nhập mã nhân viên</div>
+      </div>
+      <div class="field" id="field-dept">
+        <label>Bộ phận <span class="req">*</span></label>
+        <input class="inp" id="inp-dept" type="text" placeholder="Ví dụ: QM, Sản xuất, Kho..." autocomplete="off"/>
+        <div class="field-error">⚠ Vui lòng nhập bộ phận</div>
+      </div>
+      <div class="field" id="field-chucvu">
+        <label>Chức vụ <span class="req">*</span></label>
+        <input class="inp" id="inp-chucvu" type="text" placeholder="Ví dụ: Nhân viên, Tổ trưởng, Trưởng phòng..." autocomplete="off"/>
+        <div class="field-error">⚠ Vui lòng nhập chức vụ</div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">&#128204; Ghi chú</div>
+        <ul>
+          <li>Bài khảo sát nhằm đánh giá mức độ nhận thức về Văn hóa chất lượng trong công ty.</li>
+          <li>Mỗi câu hỏi có <strong>4 phương án</strong>, chọn <strong>01 phương án</strong> phù hợp nhất với quan điểm của anh/chị.</li>
+          <li>Kết quả chỉ dùng để đánh giá và cải thiện hoạt động quản lý chất lượng.</li>
+          <li>Anh/chị vui lòng trả lời trung thực theo hiểu biết và trải nghiệm thực tế.</li>
+        </ul>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-icon">&#128203;</div><div><div class="info-lbl">Số câu</div><div class="info-val">10 câu &middot; 4 lựa chọn</div></div></div>
+        <div class="info-item"><div class="info-icon">&#9201;</div><div><div class="info-lbl">Thời gian</div><div class="info-val">15 phút</div></div></div>
+        <div class="info-item"><div class="info-icon">&#127885;</div><div><div class="info-lbl">Tổng điểm</div><div class="info-val">Tối đa 40 điểm</div></div></div>
+        <div class="info-item"><div class="info-icon">&#9729;</div><div><div class="info-lbl">Lưu kết quả</div><div class="info-val">Google Sheets</div></div></div>
+      </div>
+      <button class="btn btn-primary" id="btn-start">Bắt đầu làm bài →</button>
+    </div>
+  </div>
+
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-topbar">
+      <span id="meta-name" style="font-size:14px;color:var(--muted2)"></span>
+      <div class="timer-wrap" id="timer-wrap"><span>&#9201;</span><span id="timer-display">15:00</span></div>
+    </div>
+    <div class="prog-meta"><span id="meta-count">0 / 10 câu đã trả lời</span><span id="meta-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="dots" id="dots"></div>
+    <div class="q-card" id="q-card">
+      <div class="q-num" id="q-num">CÂU 1 / 10</div>
+      <p class="q-text" id="q-text"></p>
+      <div class="opts" id="q-opts"></div>
+      <div class="nav-row">
+        <button class="nav-btn nav-prev" id="btn-prev" disabled>← Trước</button>
+        <button class="nav-btn nav-next" id="btn-next">Tiếp theo →</button>
+        <button class="nav-btn nav-submit" id="btn-submit" style="display:none" disabled>&#10003; Nộp bài</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div id="banner-timeout" class="banner ban-timeout" style="display:none">&#9200; Hết giờ! Bài đã tự động nộp.</div>
+    <div id="banner-saving" class="banner ban-saving" style="display:none"><span class="spin">&#8987;</span>&nbsp;Đang lưu kết quả...</div>
+    <div id="banner-success" class="banner ban-success" style="display:none">&#10003; Đã lưu vào Google Sheets thành công!</div>
+    <div id="banner-error" class="banner ban-error" style="display:none">&#10007; Không thể lưu. Kiểm tra kết nối.</div>
+    <div class="result-hero" id="result-hero">
+      <div class="result-glow" id="result-glow"></div>
+      <div class="result-who" id="result-who"></div>
+      <div class="result-big" id="result-big">—</div>
+      <div class="result-denom">/ 40 điểm</div>
+      <div class="result-badge" id="result-badge">—</div>
+      <div class="result-desc" id="result-desc"></div>
+      <div class="score-table" style="display:none"><table>
+        <tr><th>Điểm</th><th>Đánh giá</th><th>Nhận xét</th></tr>
+        <tr id="row-tot"><td>34–40</td><td>&#11088; Tốt</td><td>Nhận thức rõ về vai trò cá nhân trong việc thực hiện văn hóa chất lượng, có xu hướng chủ động đảm bảo chất lượng và cải tiến</td></tr>
+        <tr id="row-kha"><td>27–33</td><td>&#128077; Khá</td><td>Có nhận thức đúng về yêu cầu chất lượng và trách nhiệm, tuy nhiên mức độ chủ động chưa cao</td></tr>
+        <tr id="row-tb"><td>20–26</td><td>&#128218; Trung bình</td><td>Nhận thức chủ yếu ở mức tuân thủ, cần tăng cường đào tạo và nhắc nhở về văn hóa chất lượng</td></tr>
+        <tr id="row-kem"><td>&lt;20</td><td>&#9888; Kém</td><td>Nhận thức còn hạn chế, cần đào tạo và hướng dẫn bổ sung</td></tr>
+      </table></div>
+      <div class="ip-info"><div class="ip-dot"></div><span id="ip-text">Đang lấy IP...</span></div>
+    </div>
+    <div class="detail-wrap">
+      <div class="detail-title">&#128202; Chi tiết từng câu</div>
+      <div id="detail-rows"></div>
+    </div>
+    <button class="btn btn-ghost" id="btn-reset" style="display:none">↺ Làm lại bài kiểm tra</button>
+  </div>
+
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-box">
+      <div class="modal-icon">&#128203;</div>
+      <div class="modal-title">Xác nhận nộp bài?</div>
+      <div class="modal-body">Sau khi nộp, kết quả sẽ được <strong>lưu vào Google Sheets</strong> và không thể thay đổi.</div>
+      <div class="modal-summary" id="modal-summary"></div>
+      <div class="modal-btns">
+        <button class="mbtn mbtn-cancel" id="btn-modal-cancel">&#10005; Huỷ</button>
+        <button class="mbtn mbtn-confirm" id="btn-modal-confirm">&#10003; Xác nhận nộp</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyCZ9QB8_DL9r8ZPgy4Jl_gL5-u_yxsoj4TM0YtRe6Uw9MzAPW4WkAg9H5lVwFWbMcI/exec';
+var SHEET_NAME = 'Cấp lao động phổ thông';
+
+var QUESTIONS = [
+  {id:1,text:`Anh/chị có biết công ty Tân Tường Khang triển khai Chương trình Văn hóa chất lượng, Chính sách và Mục tiêu chất lượng hằng năm không?`,opts:[
+    {s:4,l:"A",t:`Có, tôi đã được phổ biến và hiểu nội dung của chương trình`},
+    {s:3,l:"B",t:`Có, tôi đã được phổ biến nhưng chưa nắm rõ nội dung`},
+    {s:2,l:"C",t:`Tôi biết công ty có triển khai chương trình này nhưng chưa hiểu cụ thể`},
+    {s:1,l:"D",t:`Tôi chưa từng nghe các nội dung này`}
+  ]},
+  {id:2,text:`Theo anh/chị, "Văn hóa chất lượng" trong công ty là trách nhiệm của ai?`,opts:[
+    {s:3,l:"A",t:`Trách nhiệm của Ban lãnh đạo trong việc định hướng, xây dựng chính sách và thúc đẩy thực hiện trong toàn công ty`},
+    {s:2,l:"B",t:`Trách nhiệm của các trưởng bộ phận/quản lý trong việc triển khai và giám sát thực hiện trong phạm vi bộ phận`},
+    {s:1,l:"C",t:`Trách nhiệm của bộ phận QA/QC hoặc Phòng Quản lý chất lượng trong việc kiểm soát và đảm bảo chất lượng`},
+    {s:4,l:"D",t:`Là trách nhiệm của tất cả nhân viên trong công ty, ở mọi vị trí công việc`}
+  ]},
+  {id:3,text:`Theo anh/chị, mức độ ảnh hưởng của công việc cá nhân đối với chất lượng chung của công ty được hiểu như thế nào?`,opts:[
+    {s:4,l:"A",t:`Công việc của mỗi cá nhân đều có thể ảnh hưởng trực tiếp hoặc gián tiếp đến chất lượng sản phẩm và dịch vụ của công ty`},
+    {s:3,l:"B",t:`Công việc của mỗi cá nhân có ảnh hưởng nhất định đến chất lượng trong phạm vi nhiệm vụ được giao`},
+    {s:2,l:"C",t:`Ảnh hưởng đến chất lượng chủ yếu nằm ở các công đoạn sản xuất hoặc kiểm soát chất lượng`},
+    {s:1,l:"D",t:`Chất lượng sản phẩm chủ yếu được quyết định ở công đoạn kiểm tra cuối cùng`}
+  ]},
+  {id:4,text:`Theo anh/chị "Chất lượng" trong công việc của mình được hiểu phù hợp nhất là gì?`,opts:[
+    {s:1,l:"A",t:`Hoàn thành công việc theo đúng yêu cầu và tiêu chuẩn đã được quy định`},
+    {s:2,l:"B",t:`Thực hiện công việc đúng quy trình nhằm đảm bảo sản phẩm hoặc dịch vụ đạt yêu cầu`},
+    {s:3,l:"C",t:`Thực hiện công việc chính xác để hạn chế sai sót`},
+    {s:4,l:"D",t:`Chủ động kiểm soát công việc của mình và liên tục cải tiến để nâng cao chất lượng`}
+  ]},
+  {id:5,text:`Cấp quản lý của anh/chị có thường xuyên nhắc nhở, hướng dẫn hoặc trao đổi về các yêu cầu chất lượng trong quá trình làm việc không?`,opts:[
+    {s:4,l:"A",t:`Thường xuyên nhắc nhở và hướng dẫn để đảm bảo nhân viên hiểu và thực hiện đúng yêu cầu chất lượng`},
+    {s:3,l:"B",t:`Thỉnh thoảng trao đổi hoặc nhắc nhở khi phát sinh vấn đề liên quan đến chất lượng`},
+    {s:2,l:"C",t:`Hiếm khi đề cập đến các nội dung liên quan đến chất lượng trong công việc`},
+    {s:1,l:"D",t:`Hầu như không có sự nhắc nhở hoặc trao đổi về yêu cầu chất lượng`}
+  ]},
+  {id:6,text:`Khi phát hiện nguy cơ ảnh hưởng đến chất lượng trong công việc, anh/chị sẽ làm gì?`,opts:[
+    {s:4,l:"A",t:`Báo cáo quản lý hoặc bộ phận liên quan tạm dừng công việc nếu cần để tránh phát sinh sai lỗi`},
+    {s:3,l:"B",t:`Chủ động kiểm tra và điều chỉnh trong phạm vi công việc của mình, đồng thời thông tin cho quản lý khi cần thiết`},
+    {s:2,l:"C",t:`Ghi nhận vấn đề và chờ hướng dẫn từ quản lý trước khi thực hiện các bước tiếp theo`},
+    {s:1,l:"D",t:`Tiếp tục thực hiện công việc và theo dõi thêm trước khi báo cáo hoặc xử lý`}
+  ]},
+  {id:7,text:`Theo anh/chị, mỗi cá nhân có thể làm gì để góp phần thực hiện tốt Văn hóa chất lượng trong công ty?`,opts:[
+    {s:1,l:"A",t:`Thực hiện công việc theo đúng các quy trình, quy định và hướng dẫn đã được ban hành`},
+    {s:2,l:"B",t:`Chủ động báo cáo các vấn đề liên quan đến chất lượng cho quản lý hoặc bộ phận liên quan`},
+    {s:3,l:"C",t:`Chủ động kiểm soát công việc của mình để hạn chế sai lỗi và đảm bảo chất lượng`},
+    {s:4,l:"D",t:`Duy trì thói quen làm việc chú trọng chất lượng và đề xuất các cải tiến khi cần thiết`}
+  ]},
+  {id:8,text:`Theo anh/chị, yếu tố nào giúp hạn chế sai lỗi trong quá trình làm việc hiệu quả nhất?`,opts:[
+    {s:1,l:"A",t:`Thực hiện công việc theo đúng các quy trình và hướng dẫn đã được ban hành`},
+    {s:2,l:"B",t:`Kiểm tra lại công việc của mình trước khi chuyển sang công đoạn tiếp theo`},
+    {s:3,l:"C",t:`Trao đổi với đồng nghiệp hoặc quản lý khi có điểm chưa rõ trong yêu cầu công việc`},
+    {s:4,l:"D",t:`Chủ động nhận diện nguy cơ sai lỗi và đề xuất cải tiến để phòng ngừa`}
+  ]},
+  {id:9,text:`Theo anh/chị, việc thực hiện tốt Văn hóa chất lượng mang lại lợi ích quan trọng nhất nào cho công ty?`,opts:[
+    {s:1,l:"A",t:`Giúp các hoạt động trong công ty được thực hiện thống nhất theo quy trình và quy định`},
+    {s:2,l:"B",t:`Giảm sai lỗi trong quá trình làm việc và nâng cao chất lượng sản phẩm`},
+    {s:3,l:"C",t:`Tăng sự tin tưởng của khách hàng và nâng cao uy tín của công ty`},
+    {s:4,l:"D",t:`Góp phần duy trì sự phát triển ổn định và bền vững của công ty`}
+  ]},
+  {id:10,text:`Anh/chị có biết công ty đang áp dụng các tiêu chuẩn quản lý chất lượng như ISO 9001:2015 và BRCGS?`,opts:[
+    {s:4,l:"A",t:`Tôi biết và hiểu các yêu cầu cơ bản của các tiêu chuẩn này`},
+    {s:3,l:"B",t:`Tôi biết công ty đang áp dụng nhưng chỉ hiểu ở mức sơ bộ`},
+    {s:2,l:"C",t:`Tôi có nghe đến các tiêu chuẩn này nhưng chưa biết rõ nội dung`},
+    {s:1,l:"D",t:`Tôi chưa biết công ty đang áp dụng các tiêu chuẩn này`}
+  ]}
+];
+
+/* TTK-QA-P15 v4 — addEventListener only, no inline onclick */
+
+if(!String.prototype.padStart){
+  String.prototype.padStart=function(l,c){var s=String(this);c=c||' ';while(s.length<l)s=c+s;return s;};
+}
+
+var C={4:'#10b981',3:'#3b82f6',2:'#f59e0b',1:'#ef4444'};
+var LBL={4:'Tốt',3:'Khá',2:'Trung bình',1:'Kém'};
+
+function getLevel(t){
+  if(t>=34)return{l:'&#11088; Tốt',c:'#10b981',g:'rgba(16,185,129,.15)',d:'Nhận thức rõ về vai trò cá nhân trong việc thực hiện văn hóa chất lượng, có xu hướng chủ động đảm bảo chất lượng và cải tiến.',row:'row-tot'};
+  if(t>=27)return{l:'&#128077; Khá',c:'#3b82f6',g:'rgba(59,130,246,.15)',d:'Có nhận thức đúng về yêu cầu chất lượng và trách nhiệm, tuy nhiên mức độ chủ động chưa cao.',row:'row-kha'};
+  if(t>=20)return{l:'&#128218; Trung bình',c:'#f59e0b',g:'rgba(245,158,11,.15)',d:'Nhận thức chủ yếu ở mức tuân thủ quy trình, cần tăng cường đào tạo.',row:'row-tb'};
+  return{l:'&#9888; Kém',c:'#ef4444',g:'rgba(239,68,68,.15)',d:'Nhận thức còn hạn chế, cần đào tạo và hướng dẫn bổ sung.',row:'row-kem'};
+}
+
+var state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},ip:''};
+var timerInterval=null,timeLeft=900;
+
+function fetchIP(){
+  try{
+    var xhr=new XMLHttpRequest();
+    xhr.open('GET','https://api.ipify.org?format=json',true);
+    xhr.onreadystatechange=function(){
+      if(xhr.readyState===4){
+        try{var d=JSON.parse(xhr.responseText);state.ip=d.ip||'N/A';}catch(e){state.ip='N/A';}
+      }
+    };
+    xhr.send();
+  }catch(e){state.ip='N/A';}
+}
+
+function show(id){
+  var ss=document.querySelectorAll('.screen');
+  for(var i=0;i<ss.length;i++)ss[i].classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function answered(){
+  var c=0;for(var k in state.answers){if(state.answers.hasOwnProperty(k))c++;}return c;
+}
+function totalScore(){
+  var t=0;for(var k in state.answers){if(state.answers.hasOwnProperty(k))t+=state.answers[k];}return t;
+}
+
+function startQuiz(){
+  var nv=document.getElementById('inp-name').value.trim();
+  var mv=document.getElementById('inp-manv').value.trim();
+  var dv=document.getElementById('inp-dept').value.trim();
+  var cv=document.getElementById('inp-chucvu').value.trim();
+  var ok=true;
+  var fids=['field-name','field-manv','field-dept','field-chucvu'];
+  for(var fi=0;fi<fids.length;fi++)document.getElementById(fids[fi]).classList.remove('has-error');
+  if(!nv){document.getElementById('field-name').classList.add('has-error');ok=false;}
+  if(!mv){document.getElementById('field-manv').classList.add('has-error');ok=false;}
+  if(!dv){document.getElementById('field-dept').classList.add('has-error');ok=false;}
+  if(!cv){document.getElementById('field-chucvu').classList.add('has-error');ok=false;}
+  if(!ok)return;
+  state.name=nv;state.manv=mv;state.dept=dv;state.chucvu=cv;
+  state.current=0;state.answers={};
+  fetchIP();buildDots();renderQuestion();show('screen-quiz');startTimer();
+}
+
+function pad2(n){return String(n).padStart(2,'0');}
+function startTimer(){
+  timeLeft=900;clearInterval(timerInterval);updateTimer();
+  timerInterval=setInterval(function(){timeLeft--;updateTimer();if(timeLeft<=0){clearInterval(timerInterval);autoSubmit();}},1000);
+}
+function updateTimer(){
+  var el=document.getElementById('timer-display');
+  var bx=document.getElementById('timer-wrap');
+  if(!el)return;
+  el.textContent=pad2(Math.floor(timeLeft/60))+':'+pad2(timeLeft%60);
+  var cls='timer-wrap';
+  if(timeLeft<=60)cls+=' danger';
+  else if(timeLeft<=300)cls+=' warn';
+  bx.className=cls;
+}
+function autoSubmit(){
+  for(var i=0;i<QUESTIONS.length;i++){if(!state.answers[QUESTIONS[i].id])state.answers[QUESTIONS[i].id]=1;}
+  show('screen-result');renderResult(true);saveToSheets();
+}
+
+function buildDots(){
+  var c=document.getElementById('dots');c.innerHTML='';
+  for(var i=0;i<QUESTIONS.length;i++){
+    (function(idx){
+      var b=document.createElement('button');
+      b.className='dot';b.textContent=idx+1;b.id='dot-'+QUESTIONS[idx].id;
+      b.addEventListener('click',function(){state.current=idx;renderQuestion();});
+      c.appendChild(b);
+    })(i);
+  }
+}
+function updateDots(){
+  for(var i=0;i<QUESTIONS.length;i++){
+    var d=document.getElementById('dot-'+QUESTIONS[i].id);if(!d)continue;
+    var cls='dot';
+    if(state.answers[QUESTIONS[i].id])cls+=' done';
+    if(i===state.current)cls+=' active';
+    d.className=cls;
+  }
+}
+
+function renderQuestion(){
+  var q=QUESTIONS[state.current];
+  var cnt=answered(),pct=Math.round(cnt/QUESTIONS.length*100);
+  document.getElementById('meta-name').textContent=state.name+(state.dept?' · '+state.dept:'');
+  document.getElementById('meta-count').textContent=cnt+' / '+QUESTIONS.length+' câu đã trả lời';
+  document.getElementById('meta-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('q-num').textContent='CÂU '+q.id+' / 10';
+  document.getElementById('q-text').textContent=q.text;
+  var oc=document.getElementById('q-opts');oc.innerHTML='';
+  for(var oi=0;oi<q.opts.length;oi++){
+    (function(opt){
+      var sel=state.answers[q.id]===opt.s;
+      var btn=document.createElement('button');
+      btn.className='opt'+(sel?' picked':'');
+      btn.innerHTML='<span class="opt-lbl">'+opt.l+'</span><span class="opt-txt">'+opt.t+'</span><span class="opt-score">'+opt.s+'đ</span>';
+      btn.addEventListener('click',(function(qid,sc){return function(){selectAnswer(qid,sc);};})(q.id,opt.s));
+      oc.appendChild(btn);
+    })(q.opts[oi]);
+  }
+  var isLast=state.current===QUESTIONS.length-1;
+  document.getElementById('btn-prev').disabled=(state.current===0);
+  document.getElementById('btn-next').style.display=isLast?'none':'';
+  document.getElementById('btn-submit').style.display=isLast?'':'none';
+  var allDone=(answered()>=QUESTIONS.length);
+  document.getElementById('btn-submit').disabled=!allDone;
+  document.getElementById('btn-submit').textContent=allDone
+    ?'✓ Nộp bài & Lưu kết quả'
+    :'Còn '+(QUESTIONS.length-answered())+' câu chưa trả lời';
+  updateDots();
+}
+function selectAnswer(qId,score){
+  state.answers[qId]=score;renderQuestion();
+  if(state.current<QUESTIONS.length-1){setTimeout(function(){state.current++;renderQuestion();},320);}
+}
+function navigate(dir){
+  var n=state.current+dir;
+  if(n<0)n=0;if(n>=QUESTIONS.length)n=QUESTIONS.length-1;
+  state.current=n;renderQuestion();
+}
+
+function submitQuiz(){
+  var first=null,cnt=0;
+  for(var i=0;i<QUESTIONS.length;i++){if(!state.answers[QUESTIONS[i].id]){cnt++;if(first===null)first=i;}}
+  if(cnt>0){
+    state.current=first;renderQuestion();
+    var dot=document.getElementById('dot-'+QUESTIONS[first].id);
+    if(dot){dot.classList.add('unanswered');setTimeout(function(){if(dot)dot.classList.remove('unanswered');},1200);}
+    var card=document.getElementById('q-card');
+    card.classList.add('unanswered-highlight');
+    setTimeout(function(){card.classList.remove('unanswered-highlight');},1200);
+    showToast('⚠ Còn '+cnt+' câu chưa trả lời');
+    return;
+  }
+  openModal();
+}
+
+function openModal(){
+  var total=totalScore(),cnt=answered();
+  var h='';
+  h+='<div class="ms-item"><div class="ms-label">Người làm</div><div class="ms-val" style="font-size:12px">'+state.name+'</div></div>';
+  h+='<div class="ms-item"><div class="ms-label">Mã NV</div><div class="ms-val" style="font-size:13px">'+state.manv+'</div></div>';
+  h+='<div class="ms-item"><div class="ms-label">Chức vụ</div><div class="ms-val" style="font-size:12px">'+state.chucvu+'</div></div>';
+  h+='<div class="ms-item"><div class="ms-label">Đã trả lời</div><div class="ms-val">'+cnt+'/10</div></div>';
+  document.getElementById('modal-summary').innerHTML=h;
+  document.getElementById('modal-confirm').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-confirm').classList.remove('open');}
+function confirmSubmit(){closeModal();clearInterval(timerInterval);show('screen-result');renderResult(false);saveToSheets();}
+
+function renderResult(timeout){
+  var total=totalScore(),lv=getLevel(total);
+  var bns=['timeout','saving','success','error'];
+  for(var bi=0;bi<bns.length;bi++)document.getElementById('banner-'+bns[bi]).style.display='none';
+  if(timeout)document.getElementById('banner-timeout').style.display='flex';
+  document.getElementById('result-big').textContent=total;
+  document.getElementById('result-big').style.color=lv.c;
+  document.getElementById('result-glow').style.background=lv.g;
+  document.getElementById('result-who').textContent=state.name+(state.dept?' — '+state.dept:'')+(state.manv?' ('+state.manv+')':'');
+  document.getElementById('result-badge').innerHTML=lv.l;
+  document.getElementById('result-badge').style.color=lv.c;
+  document.getElementById('result-badge').style.borderColor=lv.c;
+  document.getElementById('result-badge').style.background=lv.g;
+  document.getElementById('result-desc').textContent=lv.d;
+  var rows=['row-tot','row-kha','row-tb','row-kem'];
+  for(var ri=0;ri<rows.length;ri++)document.getElementById(rows[ri]).classList.remove('current-row');
+  document.getElementById(lv.row).classList.add('current-row');
+  document.getElementById('ip-text').textContent='IP: '+(state.ip||'...')+' · '+new Date().toLocaleString('vi-VN');
+  var dc=document.getElementById('detail-rows');dc.innerHTML='';
+  for(var di=0;di<QUESTIONS.length;di++){
+    var q=QUESTIONS[di],sc=state.answers[q.id];
+    var chosen=null,best=null;
+    for(var oi2=0;oi2<q.opts.length;oi2++){if(q.opts[oi2].s===sc)chosen=q.opts[oi2];if(q.opts[oi2].s===4)best=q.opts[oi2];}
+    var div=document.createElement('div');
+    div.className='d-row';div.style.borderLeftColor=C[sc];
+    var bh=(sc<4&&best)?'<div class="d-best">&#128161; <strong>Đáp án tốt nhất:</strong> '+best.t+'</div>':'';
+    div.innerHTML='<div class="d-head"><span class="d-num">CÂU '+q.id+'</span><span class="d-chip" style="background:'+C[sc]+'">'+sc+'đ · '+LBL[sc]+'</span></div>'
+      +'<p class="d-q">'+q.text+'</p>'
+      +'<div class="d-chosen" style="color:'+C[sc]+'"><strong>Bạn chọn ('+(chosen?chosen.l:'?')+'):</strong> '+(chosen?chosen.t:'')+'</div>'+bh;
+    dc.appendChild(div);
+  }
+}
+
+function saveToSheets(){
+  document.getElementById('banner-saving').style.display='flex';
+  var total=totalScore(),lv=getLevel(total);
+  var _lvMap={'&#11088; T\u1ed1t':'T\u1ed1t','&#128077; Kh\u00e1':'Kh\u00e1','&#128218; Trung b\u00ecnh':'Trung b\u00ecnh','&#9888; K\u00e9m':'K\u00e9m'};var lvText=_lvMap[lv.l]||lv.l.replace(/<[^>]+>/g,'').replace(/[^\w\s\u00C0-\u1EF9]/g,'').trim();
+  var iframe=document.createElement('iframe');
+  iframe.name='hs_'+Date.now();
+  iframe.style.cssText='display:none;position:absolute;width:0;height:0;border:none';
+  document.body.appendChild(iframe);
+  var form=document.createElement('form');
+  form.method='GET';form.action=SHEETS_URL;form.target=iframe.name;form.style.display='none';
+  var fields={sheet:SHEET_NAME,name:state.name,manv:state.manv,dept:state.dept,
+    chucvu:state.chucvu,ip:state.ip||'N/A',totalScore:total,level:lvText,
+    a1:state.answers[1]||0,a2:state.answers[2]||0,a3:state.answers[3]||0,
+    a4:state.answers[4]||0,a5:state.answers[5]||0,a6:state.answers[6]||0,
+    a7:state.answers[7]||0,a8:state.answers[8]||0,a9:state.answers[9]||0,a10:state.answers[10]||0};
+  for(var fk in fields){
+    if(fields.hasOwnProperty(fk)){
+      var inp=document.createElement('input');inp.type='hidden';inp.name=fk;inp.value=fields[fk];
+      form.appendChild(inp);
+    }
+  }
+  document.body.appendChild(form);form.submit();
+  setTimeout(function(){
+    document.getElementById('banner-saving').style.display='none';
+    document.getElementById('banner-success').style.display='flex';
+    document.getElementById('ip-text').textContent='IP: '+(state.ip||'N/A')+' · '+new Date().toLocaleString('vi-VN');
+    try{document.body.removeChild(form);}catch(e){}
+    try{document.body.removeChild(iframe);}catch(e){}
+  },3000);
+}
+
+function resetQuiz(){
+  clearInterval(timerInterval);timeLeft=900;
+  state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},ip:''};
+  var inps=['inp-name','inp-manv','inp-dept','inp-chucvu'];
+  for(var ii=0;ii<inps.length;ii++){var el=document.getElementById(inps[ii]);if(el)el.value='';}
+  var flds=['field-name','field-manv','field-dept','field-chucvu'];
+  for(var fi2=0;fi2<flds.length;fi2++){var fl=document.getElementById(flds[fi2]);if(fl)fl.classList.remove('has-error');}
+  show('screen-intro');
+}
+
+var toastTimer=null;
+function showToast(msg){
+  var old=document.querySelector('.unanswered-toast');if(old&&old.parentNode)old.parentNode.removeChild(old);
+  clearTimeout(toastTimer);
+  var t=document.createElement('div');t.className='unanswered-toast';t.textContent=msg;
+  document.body.appendChild(t);
+  toastTimer=setTimeout(function(){
+    t.style.opacity='0';t.style.transition='opacity .3s';
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
+  },3000);
+}
+
+function wireEvents(){
+  var btnStart=document.getElementById('btn-start');
+  if(btnStart)btnStart.addEventListener('click',function(){startQuiz();});
+
+  var btnPrev=document.getElementById('btn-prev');
+  if(btnPrev)btnPrev.addEventListener('click',function(){navigate(-1);});
+
+  var btnNext=document.getElementById('btn-next');
+  if(btnNext)btnNext.addEventListener('click',function(){navigate(1);});
+
+  var btnSubmit=document.getElementById('btn-submit');
+  if(btnSubmit)btnSubmit.addEventListener('click',function(){submitQuiz();});
+
+  var btnReset=document.getElementById('btn-reset');
+  if(btnReset)btnReset.addEventListener('click',function(){resetQuiz();});
+
+  var btnCancel=document.getElementById('btn-modal-cancel');
+  if(btnCancel)btnCancel.addEventListener('click',function(){closeModal();});
+
+  var btnConfirm=document.getElementById('btn-modal-confirm');
+  if(btnConfirm)btnConfirm.addEventListener('click',function(){confirmSubmit();});
+
+  var overlay=document.getElementById('modal-confirm');
+  if(overlay)overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+
+  var liveInps=['inp-name','inp-manv','inp-dept','inp-chucvu'];
+  for(var li=0;li<liveInps.length;li++){
+    (function(id){
+      var el=document.getElementById(id);if(!el)return;
+      el.addEventListener('input',function(){
+        if(this.value.trim()){var f=document.getElementById('field-'+id.replace('inp-',''));if(f)f.classList.remove('has-error');}
+      });
+    })(liveInps[li]);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',wireEvents);
+}else{
+  wireEvents();
+}
+
+</script>
+</body>
+</html>
