@@ -46,6 +46,9 @@ h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing
 .info-val{font-size:14px;font-weight:600;color:var(--text)}
 .btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;font-size:17px;font-weight:700;font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent;display:block}
 .btn-primary{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
+.footer-credit{position:fixed;bottom:12px;right:16px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:6px 12px;font-size:11px;color:#475569;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.footer-credit img{width:22px;height:22px;object-fit:contain}
+.footer-credit strong{color:#1e293b;font-size:12px}
 .btn-ghost{background:rgba(0,0,0,.05);color:var(--muted2);border:1px solid var(--border);margin-top:10px}
 .quiz-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:8px 16px}
@@ -624,5 +627,11 @@ if(document.readyState==='loading'){
 }
 
 </script>
+<div class="footer-credit">
+  <img src="https://benkadia.github.io/ttk-khaosatVHCL/logo.png" alt="TTK"/>
+  <div>
+    <strong>Khoa Bùi</strong> &middot; Tân Tường Khang
+  </div>
+</div>
 </body>
 </html>
