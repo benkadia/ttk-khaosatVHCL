@@ -22,7 +22,7 @@ body::after{content:'';position:fixed;top:-30vh;left:-20vw;width:70vw;height:70v
 .header-tag::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);-webkit-animation:blink 2s infinite;animation:blink 2s infinite}
 @-webkit-keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing:-1px;background:linear-gradient(135deg,#0369a1 0%,#38bdf8 40%,#7c3aed 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing:-1px;background:linear-gradient(135deg,#0369a1 0%,#0284c7 40%,#6d28d9 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
 .header-sub{color:var(--muted);font-size:15px}
 .nhom-badge{display:inline-block;margin-top:8px;padding:5px 16px;border-radius:99px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#a78bfa;font-size:13px;font-weight:700;letter-spacing:.5px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative;overflow:hidden}
@@ -46,9 +46,6 @@ h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing
 .info-val{font-size:14px;font-weight:600;color:var(--text)}
 .btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;font-size:17px;font-weight:700;font-family:'Sora',sans-serif;-webkit-tap-highlight-color:transparent;display:block}
 .btn-primary{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
-.footer-credit{position:fixed;bottom:12px;right:16px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:6px 12px;font-size:11px;color:#475569;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.footer-credit img{width:22px;height:22px;object-fit:contain}
-.footer-credit strong{color:#1e293b;font-size:12px}
 .btn-ghost{background:rgba(0,0,0,.05);color:var(--muted2);border:1px solid var(--border);margin-top:10px}
 .quiz-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:8px 16px}
@@ -143,6 +140,7 @@ h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing
 .mbtn-confirm{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}
 .unanswered-toast{position:fixed;bottom:24px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#ef4444;border-radius:12px;padding:13px 22px;font-size:14px;font-weight:600;z-index:999;white-space:nowrap;max-width:90vw;text-align:center}
 @media(max-width:500px){.info-grid{grid-template-columns:1fr}.card{padding:20px}.q-card{padding:20px}.result-big{font-size:64px}.modal-summary{grid-template-columns:1fr}.modal-box{padding:24px 20px}.dot{width:34px;height:34px;font-size:13px}}
+.footer-credit{position:fixed;bottom:14px;right:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:8px 14px;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.1);font-family:'Sora',sans-serif;}.footer-credit img{width:28px;height:28px;object-fit:contain;flex-shrink:0;border-radius:4px;}.footer-credit-text{display:flex;flex-direction:column;line-height:1.3;}.footer-credit-name{font-size:12px;font-weight:700;color:#1e293b;}.footer-credit-company{font-size:11px;color:#64748b;font-weight:500;}
 </style>
 </head>
 <body>
@@ -257,71 +255,10 @@ h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.2;letter-spacing
   </div>
 </div>
 <script>
-var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyCZ9QB8_DL9r8ZPgy4Jl_gL5-u_yxsoj4TM0YtRe6Uw9MzAPW4WkAg9H5lVwFWbMcI/exec';
+var SHEETS_URL = https://script.google.com/macros/s/AKfycbwcS8wwB0Xnfy4nu4kCdmOCUPqWsSvQDB7qx7HjAdPYCB7e61S-gnrNAvgyfjuAQEw/exec';
 var SHEET_NAME = 'Cấp nhân viên gián tiếp';
 
-var QUESTIONS = [
-  {id:1,text:`Anh/chị biết công ty Tân Tường Khang có triển khai chương trình Văn hóa chất lượng, Mục tiêu chất lượng, Chính sách chất lượng hàng năm không?`,opts:[
-    {s:4,l:"A",t:`Có, tôi đã được phổ biến và hiểu nội dung của chương trình`},
-    {s:3,l:"B",t:`Có, tôi đã được phổ biến nhưng chưa nắm rõ nội dung`},
-    {s:2,l:"C",t:`Tôi biết công ty có triển khai chương trình này nhưng chưa hiểu cụ thể`},
-    {s:1,l:"D",t:`Tôi chưa từng nghe hoặc chưa biết về các nội dung này`}
-  ]},
-  {id:2,text:`Theo anh/chị, Ai đóng vai trò quan trọng nhất trong việc đảm bảo chất lượng công việc hằng ngày?`,opts:[
-    {s:1,l:"A",t:`Bộ phận QA/QC chịu trách nhiệm kiểm soát và đảm bảo chất lượng sản phẩm`},
-    {s:2,l:"B",t:`Trưởng bộ phận chịu trách nhiệm quản lý và giám sát chất lượng trong phạm vi bộ phận`},
-    {s:4,l:"C",t:`Mỗi nhân viên chịu trách nhiệm đảm bảo chất lượng trong phạm vi công việc của mình`},
-    {s:3,l:"D",t:`Ban lãnh đạo chịu trách nhiệm định hướng và cam kết về chất lượng trong toàn tổ chức`}
-  ]},
-  {id:3,text:`Theo anh/chị hiểu "Văn hóa chất lượng" trong doanh nghiệp được hiểu phù hợp nhất là?`,opts:[
-    {s:2,l:"A",t:`Hệ thống các quy trình, tiêu chuẩn và hướng dẫn công việc nhằm đảm bảo sản phẩm đáp ứng yêu cầu chất lượng`},
-    {s:3,l:"B",t:`Sự tuân thủ nhất quán của nhân viên đối với các quy định và yêu cầu trong hệ thống quản lý chất lượng`},
-    {s:1,l:"C",t:`Khả năng của tổ chức trong việc đảm bảo sản phẩm đáp ứng yêu cầu trước khi cung cấp cho khách hàng`},
-    {s:4,l:"D",t:`Tập hợp các giá trị, nhận thức và hành vi của mọi thành viên trong tổ chức hướng đến việc duy trì và cải tiến chất lượng`}
-  ]},
-  {id:4,text:`Theo anh/chị, văn hóa chất lượng trong công ty được thể hiện rõ nhất qua điều gì?`,opts:[
-    {s:1,l:"A",t:`Công ty xây dựng và ban hành đầy đủ các quy trình, tiêu chuẩn và hướng dẫn công việc liên quan đến chất lượng`},
-    {s:2,l:"B",t:`Nhân viên thực hiện đúng các quy trình và yêu cầu chất lượng trong quá trình làm việc`},
-    {s:3,l:"C",t:`Nhân viên chủ động kiểm soát công việc của mình và đảm bảo chất lượng`},
-    {s:4,l:"D",t:`Mỗi nhân viên hình thành thói quen và trách nhiệm cá nhân trong việc duy trì và cải tiến chất lượng`}
-  ]},
-  {id:5,text:`Theo anh/chị, biện pháp nào hiệu quả nhất để khuyến khích nhân viên tham gia và duy trì việc thực hiện Văn hóa chất lượng trong công việc hằng ngày?`,opts:[
-    {s:1,l:"A",t:`Tăng cường kiểm tra và giám sát nhằm đảm bảo các yêu cầu chất lượng được thực hiện đúng`},
-    {s:2,l:"B",t:`Đào tạo, hướng dẫn rõ yêu cầu chất lượng trong công việc và thường xuyên nhắc nhở nhân viên thực hiện`},
-    {s:3,l:"C",t:`Khuyến khích nhân viên chủ động tham gia, đóng góp ý kiến và đề xuất cải tiến trong quá trình làm việc`},
-    {s:4,l:"D",t:`Xây dựng môi trường làm việc nơi mỗi nhân viên tự giác duy trì thói quen làm việc hướng đến chất lượng`}
-  ]},
-  {id:6,text:`Khi có sự khác biệt quan điểm giữa bộ phận sản xuất và bộ phận chất lượng trong quá trình xử lý vấn đề, cách tiếp cận nào phù hợp?`,opts:[
-    {s:4,l:"A",t:`Phối hợp giữa các bộ phận để phân tích nguyên nhân và thống nhất phương án xử lý đảm bảo yêu cầu chất lượng`},
-    {s:3,l:"B",t:`Căn cứ vào quy trình, tiêu chuẩn và các dữ liệu liên quan để đánh giá và lựa chọn giải pháp phù hợp`},
-    {s:2,l:"C",t:`Thống nhất phương án xử lý dựa trên kinh nghiệm thực tế của các cá nhân hoặc bộ phận liên quan`},
-    {s:1,l:"D",t:`Trao đổi để hiểu rõ quan điểm của từng bộ phận và cân nhắc các yêu cầu về tiến độ sản xuất`}
-  ]},
-  {id:7,text:`Khi gặp vấn đề về chất lượng mà liên quan đến nhiều bộ phận, anh/chị sẽ xử lý như thế nào?`,opts:[
-    {s:4,l:"A",t:`Chủ động trao đổi và phối hợp với các bộ phận liên quan để xác định nguyên nhân và thống nhất hướng xử lý phù hợp`},
-    {s:3,l:"B",t:`Ưu tiên xử lý các nội dung thuộc phạm vi bộ phận mình, đồng thời thông tin cho các bộ phận liên quan để phối hợp`},
-    {s:2,l:"C",t:`Báo cáo sự việc cho quản lý trực tiếp và thực hiện theo hướng dẫn để đảm bảo việc xử lý được thống nhất`},
-    {s:1,l:"D",t:`Chuyển thông tin cho bộ phận có trách nhiệm chính và theo dõi quá trình xử lý cho đến khi vấn đề được giải quyết`}
-  ]},
-  {id:8,text:`Theo anh/chị, mục đích quan trọng nhất của việc duy trì và cải tiến Văn hóa chất lượng trong tổ chức là gì?`,opts:[
-    {s:1,l:"A",t:`Đảm bảo các hoạt động trong công ty được thực hiện theo đúng quy trình và quy định đã ban hành`},
-    {s:2,l:"B",t:`Nâng cao chất lượng sản phẩm và giảm thiểu sai lỗi trong quá trình làm việc`},
-    {s:3,l:"C",t:`Tăng sự tin tưởng của khách hàng và góp phần phát triển bền vững của doanh nghiệp`},
-    {s:4,l:"D",t:`Hình thành nhận thức và thói quen làm việc luôn hướng đến chất lượng của toàn bộ nhân viên`}
-  ]},
-  {id:9,text:`Khi nhận được phản hồi của khách hàng về chất lượng sản phẩm, bước nào là quan trọng nhất để đảm bảo vấn đề được xử lý hiệu quả?`,opts:[
-    {s:1,l:"A",t:`Xác minh thông tin phản hồi và đánh giá mức độ ảnh hưởng của vấn đề đối với sản phẩm hoặc khách hàng`},
-    {s:3,l:"B",t:`Thực hiện các hành động khắc phục đối với sản phẩm hoặc quy trình liên quan để giải quyết sự cố`},
-    {s:2,l:"C",t:`Phối hợp với các bộ phận liên quan để xác định nguyên nhân và thống nhất phương án xử lý`},
-    {s:4,l:"D",t:`Thực hiện đầy đủ các bước từ xác minh, xử lý đến theo dõi hiệu quả nhằm đảm bảo vấn đề không tái diễn`}
-  ]},
-  {id:10,text:`Nếu một lỗi xảy ra lặp lại nhiều lần trong quá trình sản xuất, điều này thường phản ánh điều gì về hệ thống quản lý chất lượng?`,opts:[
-    {s:1,l:"A",t:`Có thể tồn tại sai sót trong việc đào tạo hoặc hướng dẫn công việc cho nhân viên`},
-    {s:2,l:"B",t:`Một số bước trong quy trình hoặc hoạt động kiểm soát chất lượng chưa được thực hiện hiệu quả`},
-    {s:3,l:"C",t:`Các yếu tố liên quan đến thiết bị, nguyên vật liệu hoặc điều kiện sản xuất có thể chưa được kiểm soát ổn định`},
-    {s:4,l:"D",t:`Hệ thống cần được xem xét và cải tiến để loại bỏ nguyên nhân gốc rễ và ngăn ngừa lỗi tái diễn`}
-  ]}
-];
+var QUESTIONS = [];
 
 /* TTK-QA-P15 v4 — addEventListener only, no inline onclick */
 
@@ -333,13 +270,14 @@ var C={4:'#10b981',3:'#3b82f6',2:'#f59e0b',1:'#ef4444'};
 var LBL={4:'Tốt',3:'Khá',2:'Trung bình',1:'Kém'};
 
 function getLevel(t){
+  var _mx=(QUESTIONS.length*4)||40;t=t*40/_mx;
   if(t>=34)return{l:'&#11088; Tốt',c:'#10b981',g:'rgba(16,185,129,.15)',d:'Nhận thức rõ về vai trò cá nhân trong việc thực hiện văn hóa chất lượng, có xu hướng chủ động đảm bảo chất lượng và cải tiến.',row:'row-tot'};
   if(t>=27)return{l:'&#128077; Khá',c:'#3b82f6',g:'rgba(59,130,246,.15)',d:'Có nhận thức đúng về yêu cầu chất lượng và trách nhiệm, tuy nhiên mức độ chủ động chưa cao.',row:'row-kha'};
   if(t>=20)return{l:'&#128218; Trung bình',c:'#f59e0b',g:'rgba(245,158,11,.15)',d:'Nhận thức chủ yếu ở mức tuân thủ quy trình, cần tăng cường đào tạo.',row:'row-tb'};
   return{l:'&#9888; Kém',c:'#ef4444',g:'rgba(239,68,68,.15)',d:'Nhận thức còn hạn chế, cần đào tạo và hướng dẫn bổ sung.',row:'row-kem'};
 }
 
-var state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},ip:''};
+var state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},labels:{},ip:''};
 var timerInterval=null,timeLeft=900;
 
 function fetchIP(){
@@ -370,6 +308,7 @@ function totalScore(){
 }
 
 function startQuiz(){
+  if(!QUESTIONS_LOADED||QUESTIONS.length===0){loadQuestions();return;}
   var nv=document.getElementById('inp-name').value.trim();
   var mv=document.getElementById('inp-manv').value.trim();
   var dv=document.getElementById('inp-dept').value.trim();
@@ -383,7 +322,7 @@ function startQuiz(){
   if(!cv){document.getElementById('field-chucvu').classList.add('has-error');ok=false;}
   if(!ok)return;
   state.name=nv;state.manv=mv;state.dept=dv;state.chucvu=cv;
-  state.current=0;state.answers={};
+  state.current=0;state.answers={};state.labels={};
   fetchIP();buildDots();renderQuestion();show('screen-quiz');startTimer();
 }
 
@@ -459,8 +398,8 @@ function renderQuestion(){
     :'Còn '+(QUESTIONS.length-answered())+' câu chưa trả lời';
   updateDots();
 }
-function selectAnswer(qId,score){
-  state.answers[qId]=score;renderQuestion();
+function selectAnswer(qId,score,label){
+  state.answers[qId]=score;state.labels[qId]=label;renderQuestion();
   if(state.current<QUESTIONS.length-1){setTimeout(function(){state.current++;renderQuestion();},320);}
 }
 function navigate(dir){
@@ -504,6 +443,7 @@ function renderResult(timeout){
   for(var bi=0;bi<bns.length;bi++)document.getElementById('banner-'+bns[bi]).style.display='none';
   if(timeout)document.getElementById('banner-timeout').style.display='flex';
   document.getElementById('result-big').textContent=total;
+  var _dn=document.querySelector('.result-denom');if(_dn)_dn.textContent='/ '+(QUESTIONS.length*4)+' \u0111i\u1ec3m';
   document.getElementById('result-big').style.color=lv.c;
   document.getElementById('result-glow').style.background=lv.g;
   document.getElementById('result-who').textContent=state.name+(state.dept?' — '+state.dept:'')+(state.manv?' ('+state.manv+')':'');
@@ -541,11 +481,8 @@ function saveToSheets(){
   document.body.appendChild(iframe);
   var form=document.createElement('form');
   form.method='GET';form.action=SHEETS_URL;form.target=iframe.name;form.style.display='none';
-  var fields={sheet:SHEET_NAME,name:state.name,manv:state.manv,dept:state.dept,
-    chucvu:state.chucvu,ip:state.ip||'N/A',totalScore:total,level:lvText,
-    a1:state.answers[1]||0,a2:state.answers[2]||0,a3:state.answers[3]||0,
-    a4:state.answers[4]||0,a5:state.answers[5]||0,a6:state.answers[6]||0,
-    a7:state.answers[7]||0,a8:state.answers[8]||0,a9:state.answers[9]||0,a10:state.answers[10]||0};
+  var fields={sheet:SHEET_NAME,name:state.name,manv:state.manv,dept:state.dept,chucvu:state.chucvu,ip:state.ip||'N/A',totalScore:total,level:lvText};
+  for(var qf=0;qf<QUESTIONS.length;qf++){var qq=QUESTIONS[qf];fields['a'+qq.id]=state.answers[qq.id]||0;fields['l'+qq.id]=state.labels[qq.id]||'';}
   for(var fk in fields){
     if(fields.hasOwnProperty(fk)){
       var inp=document.createElement('input');inp.type='hidden';inp.name=fk;inp.value=fields[fk];
@@ -564,7 +501,7 @@ function saveToSheets(){
 
 function resetQuiz(){
   clearInterval(timerInterval);timeLeft=900;
-  state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},ip:''};
+  state={name:'',manv:'',dept:'',chucvu:'',current:0,answers:{},labels:{},ip:''};
   var inps=['inp-name','inp-manv','inp-dept','inp-chucvu'];
   for(var ii=0;ii<inps.length;ii++){var el=document.getElementById(inps[ii]);if(el)el.value='';}
   var flds=['field-name','field-manv','field-dept','field-chucvu'];
@@ -584,9 +521,38 @@ function showToast(msg){
   },3000);
 }
 
+
+/* ---- v7: Load cau hoi dong tu Google Sheets ---- */
+var QUESTIONS_LOADED = false;
+function loadQuestions(){
+  var btn=document.getElementById('btn-start');
+  if(btn){btn.disabled=true;btn.textContent='\u0110ang t\u1ea3i c\u00e2u h\u1ecfi...';btn.removeAttribute('data-retry');}
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',SHEETS_URL+'?action=questions&sheet='+encodeURIComponent(SHEET_NAME),true);
+  xhr.onreadystatechange=function(){
+    if(xhr.readyState===4){
+      var ok=false;
+      try{
+        var d=JSON.parse(xhr.responseText);
+        if(d&&d.status==='ok'&&d.questions&&d.questions.length>0){
+          QUESTIONS=d.questions;QUESTIONS_LOADED=true;ok=true;
+        }
+      }catch(err){}
+      if(btn){
+        if(ok){btn.disabled=false;btn.textContent='B\u1eaft \u0111\u1ea7u l\u00e0m b\u00e0i \u2192';}
+        else{btn.disabled=false;btn.textContent='\u21bb T\u1ea3i l\u1ea1i c\u00e2u h\u1ecfi (l\u1ed7i k\u1ebft n\u1ed1i)';btn.setAttribute('data-retry','1');}
+      }
+    }
+  };
+  xhr.send();
+}
+
 function wireEvents(){
   var btnStart=document.getElementById('btn-start');
-  if(btnStart)btnStart.addEventListener('click',function(){startQuiz();});
+  if(btnStart)btnStart.addEventListener('click',function(){
+    if(btnStart.getAttribute('data-retry')){loadQuestions();return;}
+    startQuiz();
+  });
 
   var btnPrev=document.getElementById('btn-prev');
   if(btnPrev)btnPrev.addEventListener('click',function(){navigate(-1);});
@@ -620,18 +586,15 @@ function wireEvents(){
   }
 }
 
+function initPage(){wireEvents();loadQuestions();}
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',wireEvents);
+  document.addEventListener('DOMContentLoaded',initPage);
 }else{
-  wireEvents();
+  initPage();
 }
 
 </script>
-<div class="footer-credit">
-  <img src="https://benkadia.github.io/ttk-khaosatVHCL/logo.png" alt="TTK"/>
-  <div>
-    <strong>© 2026 Công ty TNHH SX-TM-DV Tân Tường Khang. All rights reserved.</strong>
-  </div>
-</div>
+
+<div class="footer-credit"><img src="data:image/png;base64,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" alt="TTK Logo"/><div class="footer-credit-text"><span class="footer-credit-name">Khôa Bùi</span><span class="footer-credit-company">Công ty TNHH Tân Tường Khang</span></div></div>
 </body>
 </html>
