@@ -60,6 +60,7 @@ tr:hover td{background:rgba(2,132,199,.04)}
 .qrow-chip{font-size:11px;font-weight:800;padding:2px 9px;border-radius:6px;color:#fff}
 .qrow-q{font-size:13.5px;font-weight:600;margin-bottom:6px;line-height:1.55}
 .qrow-a{font-size:13px;color:#334155;line-height:1.55}
+.qrow-best{font-size:12.5px;color:#065f46;background:rgba(16,185,129,.08);border-left:2px solid rgba(16,185,129,.5);border-radius:6px;padding:6px 10px;margin-top:6px;line-height:1.5}
 .modal-actions{display:flex;gap:10px;margin-top:18px}
 #loading-banner{display:none;background:rgba(2,132,199,.08);border:1px solid rgba(2,132,199,.25);color:var(--accent);border-radius:10px;padding:11px 16px;font-size:13.5px;margin-bottom:16px}
 /* print */
@@ -76,6 +77,7 @@ tr:hover td{background:rgba(2,132,199,.04)}
   .pr-q{border:1px solid #999;padding:8px 10px;margin-bottom:8px;page-break-inside:avoid}
   .pr-q .pq-t{font-weight:700;font-size:11.5px;margin-bottom:4px}
   .pr-q .pq-a{font-size:11px}
+  .pr-q .pq-b{font-size:10.5px;font-style:italic;margin-top:3px;padding-left:8px;border-left:2px solid #666}
   .pr-sign{display:flex;justify-content:space-between;margin-top:30px;text-align:center;font-size:11.5px}
   .pr-sign div{width:45%}
   .pr-sign .line{margin-top:60px;border-top:1px dotted #000;padding-top:4px}
@@ -261,7 +263,7 @@ function renderTable(){
   for(var j=0;j<rows.length;j++){
     var r2 = rows[j];
     html += '<tr>'+
-      '<td style="white-space:nowrap">'+r2.ts+'</td>'+
+      '<td style="white-space:nowrap">'+fmtTs(r2.ts)+'</td>'+
       '<td style="font-weight:600">'+esc(r2.name)+'</td>'+
       '<td>'+esc(r2.manv)+'</td>'+
       '<td>'+esc(r2.dept)+'</td>'+
@@ -280,6 +282,15 @@ function renderTable(){
     });
   }
 }
+function fmtTs(v){
+  var s = String(v);
+  var d = new Date(s);
+  if (isNaN(d.getTime())) return s;
+  if (s.indexOf('/') >= 0 && s.indexOf('GMT') < 0) return s;
+  function p(n){return ('0'+n).slice(-2);}
+  return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+
+         p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+}
 function esc(s){return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function openDetail(idx){
@@ -288,7 +299,7 @@ function openDetail(idx){
   $('d-info').innerHTML =
     pin('Họ và tên', r.name) + pin('Mã nhân viên', r.manv) +
     pin('Bộ phận', r.dept) + pin('Chức vụ', r.chucvu) +
-    pin('Nhóm', r.group) + pin('Thời gian nộp', r.ts) +
+    pin('Nhóm', r.group) + pin('Thời gian nộp', fmtTs(r.ts)) +
     pin('Tổng điểm', r.score + ' — ' + r.level) + pin('IP', r.ip);
   var detail = [];
   try{ detail = JSON.parse(r.detail || '[]'); }catch(e){}
@@ -301,6 +312,7 @@ function openDetail(idx){
         '<span class="qrow-chip" style="background:'+(C[d.diem]||'#999')+'">'+d.diem+' điểm</span></div>'+
         '<div class="qrow-q">'+esc(d.q)+'</div>'+
         '<div class="qrow-a"><b>Chọn ('+esc(d.chon)+'):</b> '+esc(d.dap)+'</div>'+
+        (d.best && d.diem < d.bestD ? '<div class="qrow-best"><b>Đáp án tốt nhất ('+esc(d.bestL)+'):</b> '+esc(d.best)+'</div>' : '')+
         '</div>';
     }
   } else {
@@ -333,6 +345,7 @@ function printDetail(){
     html += '<div class="pr-q">'+
       '<div class="pq-t">Câu '+d.id+': '+esc(d.q)+'</div>'+
       '<div class="pq-a">Trả lời ('+esc(d.chon)+'): '+esc(d.dap)+' — <b>'+d.diem+' điểm</b></div>'+
+      (d.best && d.diem < d.bestD ? '<div class="pq-b">Đáp án tốt nhất ('+esc(d.bestL)+'): '+esc(d.best)+' — '+d.bestD+' điểm</div>' : '')+
       '</div>';
   }
   html += '<div class="pr-sign">'+
@@ -354,7 +367,7 @@ function exportExcel(){
                 'Câu 1','Câu 2','Câu 3','Câu 4','Câu 5','Câu 6','Câu 7','Câu 8','Câu 9','Câu 10']];
     for(var i=0;i<rows.length;i++){
       var r = rows[i];
-      aoa.push([r.ts,r.name,r.manv,r.dept,r.chucvu,r.ip,r.score,r.level].concat(r.answers));
+      aoa.push([fmtTs(r.ts),r.name,r.manv,r.dept,r.chucvu,r.ip,r.score,r.level].concat(r.answers));
     }
     var ws = XLSX.utils.aoa_to_sheet(aoa);
     ws['!cols'] = [{wch:18},{wch:22},{wch:12},{wch:14},{wch:14},{wch:14},{wch:9},{wch:11},
