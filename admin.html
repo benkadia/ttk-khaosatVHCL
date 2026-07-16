@@ -61,6 +61,7 @@ tr:hover td{background:rgba(2,132,199,.04)}
 .qrow-q{font-size:13.5px;font-weight:600;margin-bottom:6px;line-height:1.55}
 .qrow-a{font-size:13px;color:#334155;line-height:1.55}
 .qrow-best{font-size:12.5px;color:#065f46;background:rgba(16,185,129,.08);border-left:2px solid rgba(16,185,129,.5);border-radius:6px;padding:6px 10px;margin-top:6px;line-height:1.5}
+.rebuilt-note{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:10px;padding:10px 13px;font-size:12.5px;line-height:1.5;margin-bottom:12px}
 .modal-actions{display:flex;gap:10px;margin-top:18px}
 #loading-banner{display:none;background:rgba(2,132,199,.08);border:1px solid rgba(2,132,199,.25);color:var(--accent);border-radius:10px;padding:11px 16px;font-size:13.5px;margin-bottom:16px}
 /* print */
@@ -77,6 +78,7 @@ tr:hover td{background:rgba(2,132,199,.04)}
   .pr-q{border:1px solid #999;padding:8px 10px;margin-bottom:8px;page-break-inside:avoid}
   .pr-q .pq-t{font-weight:700;font-size:11.5px;margin-bottom:4px}
   .pr-q .pq-a{font-size:11px}
+  .pr-note{border:1px solid #000;padding:6px 8px;font-size:10.5px;font-style:italic;margin-bottom:10px}
   .pr-q .pq-b{font-size:10.5px;font-style:italic;margin-top:3px;padding-left:8px;border-left:2px solid #666}
   .pr-sign{display:flex;justify-content:space-between;margin-top:30px;text-align:center;font-size:11.5px}
   .pr-sign div{width:45%}
@@ -187,6 +189,7 @@ function login(){
       sessionStorage.setItem('ttk_pw', pw);
       $('login-screen').style.display = 'none';
       $('dash').style.display = 'block';
+      loadBanks();
       render();
     } else {
       $('login-err').style.display = 'block';
@@ -291,6 +294,52 @@ function fmtTs(v){
   return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+
          p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
 }
+
+/* ---- Ngan hang cau hoi (de tai dung bai cu) ---- */
+var BANKS = {};
+function loadBanks(){
+  var groups = ['Cấp quản lý','Cấp lao động phổ thông','Cấp nhân viên gián tiếp'];
+  for(var i=0;i<groups.length;i++){
+    (function(g){
+      fetch(SHEETS_URL + '?action=questions&sheet=' + encodeURIComponent(g))
+        .then(function(r){return r.json();})
+        .then(function(d){ if(d && d.status==='ok' && d.questions) BANKS[g] = d.questions; })
+        .catch(function(){});
+    })(groups[i]);
+  }
+}
+
+/* Tra ve {rows:[...], rebuilt:bool} */
+function getDetail(r){
+  var snap = [];
+  try{ snap = JSON.parse(r.detail || '[]'); }catch(e){}
+  if(snap.length) return {rows:snap, rebuilt:false};
+
+  var bank = BANKS[r.group];
+  if(!bank || !bank.length) return {rows:[], rebuilt:false};
+
+  var rows = [];
+  for(var i=0;i<bank.length;i++){
+    var q = bank[i];
+    var sc = r.answers[i];
+    if(!sc) continue;
+    var hits = [], best = null;
+    for(var o=0;o<q.opts.length;o++){
+      if(q.opts[o].s === sc) hits.push(q.opts[o]);
+      if(!best || q.opts[o].s > best.s) best = q.opts[o];
+    }
+    var chosen = (hits.length === 1) ? hits[0] : null;
+    rows.push({
+      id: q.id, q: q.text,
+      chon: chosen ? chosen.l : '?',
+      dap: chosen ? chosen.t : '(không xác định được — nhiều đáp án cùng ' + sc + ' điểm)',
+      diem: sc,
+      bestL: best ? best.l : '', best: best ? best.t : '', bestD: best ? best.s : 0
+    });
+  }
+  return {rows:rows, rebuilt:true};
+}
+
 function esc(s){return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function openDetail(idx){
@@ -301,9 +350,10 @@ function openDetail(idx){
     pin('Bộ phận', r.dept) + pin('Chức vụ', r.chucvu) +
     pin('Nhóm', r.group) + pin('Thời gian nộp', fmtTs(r.ts)) +
     pin('Tổng điểm', r.score + ' — ' + r.level) + pin('IP', r.ip);
-  var detail = [];
-  try{ detail = JSON.parse(r.detail || '[]'); }catch(e){}
+  var res = getDetail(r);
+  var detail = res.rows;
   var html = '';
+  if(res.rebuilt) html += '<div class="rebuilt-note">⚠ Bài nộp trước khi bật lưu chi tiết. Nội dung dưới đây được <b>tái dựng</b> từ điểm số + ngân hàng câu hỏi hiện tại — chỉ chính xác nếu câu hỏi chưa thay đổi.</div>';
   if(detail.length){
     for(var i=0;i<detail.length;i++){
       var d = detail[i];
@@ -316,8 +366,8 @@ function openDetail(idx){
         '</div>';
     }
   } else {
-    html = '<p style="color:#64748b;font-size:13px">Bài này nộp trước khi bật snapshot — chỉ có điểm từng câu: '+
-           r.answers.join(', ')+'</p>';
+    html += '<p style="color:#64748b;font-size:13px">Chưa tải được ngân hàng câu hỏi để tái dựng. Điểm từng câu: '+
+            r.answers.join(', ')+'</p>';
   }
   $('d-questions').innerHTML = html;
   $('detail-overlay').classList.add('open');
@@ -327,8 +377,8 @@ function pin(l,v){return '<div><b>'+l+'</b>'+esc(v)+'</div>';}
 function printDetail(){
   if(!CURRENT)return;
   var r = CURRENT;
-  var detail = [];
-  try{ detail = JSON.parse(r.detail || '[]'); }catch(e){}
+  var res = getDetail(r);
+  var detail = res.rows;
   var html =
     '<div class="pr-header">'+
     '<h2>PHIẾU KẾT QUẢ KHẢO SÁT VĂN HÓA CHẤT LƯỢNG</h2>'+
@@ -339,7 +389,8 @@ function printDetail(){
     '<tr><td><b>Bộ phận:</b> '+esc(r.dept)+'</td><td><b>Chức vụ:</b> '+esc(r.chucvu)+'</td></tr>'+
     '<tr><td><b>Nhóm khảo sát:</b> '+r.group+'</td><td><b>Thời gian nộp:</b> '+r.ts+'</td></tr>'+
     '<tr><td><b>Tổng điểm:</b> '+r.score+'</td><td><b>Xếp loại:</b> '+esc(r.level)+'</td></tr>'+
-    '</table>';
+    '</table>' +
+    (res.rebuilt ? '<div class="pr-note">Ghi chú: Bài nộp trước khi hệ thống lưu chi tiết bài làm. Phần câu hỏi và đáp án dưới đây được tái dựng từ điểm số từng câu đối chiếu ngân hàng câu hỏi hiện hành.</div>' : '');
   for(var i=0;i<detail.length;i++){
     var d = detail[i];
     html += '<div class="pr-q">'+
