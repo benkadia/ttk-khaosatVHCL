@@ -353,7 +353,6 @@ function openDetail(idx){
   var res = getDetail(r);
   var detail = res.rows;
   var html = '';
-  if(res.rebuilt) html += '<div class="rebuilt-note">⚠ Bài nộp trước khi bật lưu chi tiết. Nội dung dưới đây được <b>tái dựng</b> từ điểm số + ngân hàng câu hỏi hiện tại — chỉ chính xác nếu câu hỏi chưa thay đổi.</div>';
   if(detail.length){
     for(var i=0;i<detail.length;i++){
       var d = detail[i];
